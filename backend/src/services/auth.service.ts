@@ -24,6 +24,6 @@ export const loginUser = async (data: { email: string; password: string }) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new Error("Credenciales incorrectas");
 
-    const token = generateToken(user.id, user.role);
-    return { token, user: { id: user.id, username: user.username, role: user.role } };
+    const token = generateToken(user.id, user.role, user.username, user.email);
+    return { token, user: { id: user.id, username: user.username, email: user.email, role: user.role } };
 };
