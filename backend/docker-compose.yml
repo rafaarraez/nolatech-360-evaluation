@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: .
+    container_name: nolatech-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongo:27017/nolatech
+    depends_on:
+      - mongo
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/dist
+    restart: unless-stopped 
+
+volumes:
+  mongo-data:
