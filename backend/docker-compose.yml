@@ -17,6 +17,7 @@ services:
     environment:
       - NODE_ENV=development
       - MONGO_URI=mongodb://mongo:27017/nolatech
+      - JWT_SECRET=secret
     depends_on:
       - mongo
     volumes:

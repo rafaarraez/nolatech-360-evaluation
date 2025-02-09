@@ -1,0 +1,29 @@
+import bcrypt from "bcryptjs";
+import User from "../models/user.model";
+import { generateToken } from "../utils/jwt";
+
+export const registerUser = async (data: { username: string; email: string; password: string; role: string }) => {
+    const { username, email, password, role } = data;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) throw new Error("El usuario ya existe");
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, email, password: hashedPassword, role });
+    await newUser.save();
+
+    return { id: newUser.id, username: newUser.username, email: newUser.email, role: newUser.role };
+};
+
+export const loginUser = async (data: { email: string; password: string }) => {
+    const { email, password } = data;
+
+    const user = await User.findOne({ email });
+    if (!user) throw new Error("Usuario no encontrado");
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) throw new Error("Credenciales incorrectas");
+
+    const token = generateToken(user.id, user.role);
+    return { token, user: { id: user.id, username: user.username, role: user.role } };
+};
