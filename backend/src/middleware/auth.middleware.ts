@@ -1,20 +1,25 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import User from "../models/user.model";
 
 export interface AuthRequest extends Request {
-    user?: any;
+    user?: { id: string; role: string };
 }
 
-export const verifyToken = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const token = req.header("Authorization")?.split(" ")[1];
-
-    if (!token) return res.status(401).json({ message: "Acceso denegado" });
-
+export const verifyToken = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
-        req.user = decoded;
-        next();
+        const token = req.header("Authorization")?.split(" ")[1];
+        if (!token) {
+            res.status(401).json({ message: "Acceso denegado, token no proporcionado" });
+            return;
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string; role: string };
+
+        req.user = { id: decoded.userId, role: decoded.role };
+
+        next(); // ✅ Siempre llamamos a next() si todo está bien
     } catch (error) {
-        res.status(401).json({ message: "Token inválido" });
+        res.status(403).json({ message: "Token inválido" });
     }
 };
