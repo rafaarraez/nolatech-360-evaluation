@@ -5,6 +5,8 @@ export interface IEvaluation extends Document {
     date: Date;
     score: number;
     comments: string;
+    evaluator: mongoose.Schema.Types.ObjectId;
+    feedbacks: mongoose.Types.ObjectId[]; // Relación con Feedback
 }
 
 const evaluationSchema = new Schema<IEvaluation>(
@@ -13,6 +15,8 @@ const evaluationSchema = new Schema<IEvaluation>(
         date: { type: Date, default: Date.now },
         score: { type: Number, required: true },
         comments: { type: String, required: true },
+        evaluator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Quién evaluó
+        feedbacks: [{ type: Schema.Types.ObjectId, ref: "Feedback" }], // Relación con Feedback
     },
     { timestamps: true }
 );
