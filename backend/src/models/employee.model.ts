@@ -4,7 +4,7 @@ export interface IEmployee extends Document {
     name: string;
     position: string;
     department: string;
-    evaluations: mongoose.Types.ObjectId[];
+    evaluations: mongoose.Schema.Types.ObjectId[];
     calculateEvaluationStats: () => Promise<{
         averageScore: number;
         totalEvaluations: number;

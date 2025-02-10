@@ -9,10 +9,10 @@ export interface IFeedback extends Document {
 
 const feedbackSchema = new Schema<IFeedback>(
     {
-        evaluation: { type: mongoose.Schema.Types.ObjectId, ref: "Evaluation", required: true },
-        employee: { type: mongoose.Schema.Types.ObjectId, ref: "Employee", required: true },
+        evaluation: { type: Schema.Types.ObjectId, ref: "Evaluation", required: true },
+        employee: { type: Schema.Types.ObjectId, ref: "Employee", required: true },
         feedback: { type: String, required: true },
-        givenBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+        givenBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
     },
     { timestamps: true }
 );
