@@ -5,7 +5,7 @@ export const createEvaluation = async (data: any) => {
 };
 
 export const getEvaluationById = async (id: string) => {
-    return await Evaluation.findById(id).populate("feedbacks").populate("employee evaluator", "name username");
+    return await Evaluation.findById(id).populate("feedbacks").populate("employee evaluator", "name name");
 };
 
 export const updateEvaluation = async (id: string, data: any) => {
@@ -13,5 +13,5 @@ export const updateEvaluation = async (id: string, data: any) => {
 };
 
 export const getEvaluationsByEmployee = async (employeeId: string) => {
-    return await Evaluation.find({ employee: employeeId }).populate("evaluator", "name");
+    return await Evaluation.find({ employee: employeeId }).populate("employee evaluator", "name name");
 };
