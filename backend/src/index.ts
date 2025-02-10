@@ -2,9 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db';
-import authRoutes from './routes/auth.route';
-import { authorizeRoles } from './middleware/role.middleware';
-import { verifyToken } from './middleware/auth.middleware';
+import routes from "./routes";
 
 dotenv.config();
 
@@ -15,12 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 connectDB();
-
-app.use('/api/auth', authRoutes);
-
-app.get('/api/protected', verifyToken, authorizeRoles(["Admin"]), (req, res) => {
-    res.json({ message: 'Ruta protegida' });
-});
+app.use("/api/v1", routes);
 
 app.get('/', (req, res) => {
     res.send('API is running...');
