@@ -23,7 +23,6 @@ $ yarn start
 ```
 
 ### URL Backend:
-## Docs: 
 [http://localhost:5000/](http://localhost:5000/)
 
 ### Frontend
@@ -41,5 +40,4 @@ $ yarn start
 ```
 
 ### URL Frontend:
-## Docs: 
 [http://localhost:3000/](http://localhost:3000/)
