@@ -10,7 +10,7 @@ services:
       - mongo-data:/data/db
 
   backend:
-    build: .
+    build: ./backend
     container_name: nolatech-backend
     ports:
       - "5000:5000"
@@ -21,10 +21,24 @@ services:
     depends_on:
       - mongo
     volumes:
-      - .:/app
+      - ./backend:/app
       - /app/node_modules
       - /app/dist
     restart: unless-stopped 
+
+  nextjs:
+    build: ./frontend
+    container_name: nolatech-nextjs
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    restart: unless-stopped
+    depends_on:
+      - backend
 
 volumes:
   mongo-data:
